@@ -1,0 +1,169 @@
+{
+  "type": "scalar.function",
+  "input_schema": {
+    "type": "object",
+    "description": "An image of a cat to evaluate for authenticity of behavior. The image is the totality of evidence — the cat's body language, posture, environment, and any interactions visible in the frame will be assessed to determine whether the captured moment is genuine or staged.",
+    "properties": {
+      "cat_image": {
+        "type": "image",
+        "description": "A photograph or image containing a cat. The image will be examined across three qualities: bodily naturalism (whether the cat's posture and physical state reflect voluntary, natural feline behavior — the boneless limpness of true sleep, the committed arc of a mid-leap body, the half-closed eyes of contented kneading), environmental integrity (whether the surrounding scene supports a natural moment or reveals staging through costumes, constructed sets, or props no cat would naturally engage with), and relational genuineness (whether any interactions in the frame appear mutual and voluntary, with the cat exercising agency, rather than forced or manufactured by human hands)."
+      }
+    },
+    "required": [
+      "cat_image"
+    ]
+  },
+  "tasks": [
+    {
+      "type": "vector.completion",
+      "skip": null,
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "$jmespath": "input.cat_image"
+            },
+            {
+              "type": "text",
+              "text": "You are an expert in feline body language and biomechanics. Look at this photograph of a cat. Based solely on the cat's posture, musculature, limb placement, eye state, and overall physical configuration, how would you characterize the naturalness of the cat's body position? Does the cat's body look like it arrived at this position voluntarily, through its own internal impulse?"
+            }
+          ]
+        }
+      ],
+      "responses": [
+        [
+          {
+            "type": "text",
+            "text": "This cat's body is in a completely natural position. Every physical detail — the way the weight is distributed, the relaxation or engagement of the musculature, the placement of the limbs, the set of the eyes — is entirely consistent with voluntary feline behavior. This is a cat whose body arrived at this configuration through its own impulse. Whether it's the boneless limpness of genuine sleep, the coiled readiness of a hunting crouch, or the relaxed sprawl of a comfortable cat, the posture reads as unmistakably authentic."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "This cat's body position is somewhat ambiguous. While some aspects of the posture look natural enough, there are elements that seem slightly unusual for voluntary feline behavior — the overall configuration doesn't quite read as a position the cat would have settled into entirely on its own. There may be subtle signs of external positioning or mild discomfort in how the body is arranged."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "This cat's body is clearly in an unnatural or forced position. The posture, limb placement, and overall physical configuration are inconsistent with voluntary feline behavior. The musculature shows tension or constraint rather than the natural relaxation or purposeful engagement you'd see in a cat acting on its own impulse. This cat was placed, held, or arranged into this position by someone."
+          }
+        ]
+      ],
+      "output": {
+        "$starlark": "output['scores'][0] * 1.0 + output['scores'][1] * 0.5 + output['scores'][2] * 0.0"
+      }
+    },
+    {
+      "type": "vector.completion",
+      "skip": null,
+      "messages": [
+        {
+          "role": "developer",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are a photo editor for a magazine that exclusively features candid, unstaged photographs of cats in their everyday habitats — homes, gardens, streets, windowsills, beds, desks, anywhere cats actually live and roam. Your job is to review submitted photographs and determine whether the scene surrounding the cat is authentically candid or has been staged for the camera. You accept photos taken in human environments — cats live in human homes, and that is entirely normal — but you reject any photo where the environment has been deliberately constructed, decorated, or arranged to manufacture the image. Look for costumes, accessories, miniature props, studio backdrops, visible treats positioned to lure the cat's gaze, or any setting that no cat would naturally discover and claim on its own."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "$jmespath": "input.cat_image"
+            },
+            {
+              "type": "text",
+              "text": "Here's a new submission for the magazine. Based on the scene and setting in this photograph, would you accept it for our candid cat photography collection?"
+            }
+          ]
+        }
+      ],
+      "responses": [
+        [
+          {
+            "type": "text",
+            "text": "Accepted. This is exactly what we publish — a genuine, unstaged scene. The environment is a plausible, ordinary setting where a cat would naturally spend time. There are no costumes, no miniature props, no constructed sets, no studio backdrops, and no visible signs that the scene was arranged for the camera. Whether it's a home, a garden, or a street corner, this is a real place where a real cat is doing something real. The setting fully supports the authenticity of the moment."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "Borderline. The setting has some elements that feel natural, but there are also noticeable details that suggest the scene may have been partially arranged or curated for the photograph. Some accessories, props, or environmental elements seem deliberately placed rather than naturally occurring. The environment tells a mixed story — parts of it read as authentic cat territory, but other parts feel like they were set up to create a specific image."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "Rejected. This scene has clearly been staged for the photograph. There are obvious signs of deliberate construction — costumes or accessories placed on the cat, miniature furniture or props arranged for visual effect, a studio backdrop, or an environment that no cat would naturally find itself in. The setting was built to produce this image rather than discovered by the cat. This is a manufactured scene, not a candid one."
+          }
+        ]
+      ],
+      "output": {
+        "$starlark": "output['scores'][0] * 1.0 + output['scores'][1] * 0.5 + output['scores'][2] * 0.0"
+      }
+    },
+    {
+      "type": "vector.completion",
+      "skip": null,
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "$jmespath": "input.cat_image"
+            },
+            {
+              "type": "text",
+              "text": "I study animal agency and welfare in media. Look at this image of a cat and consider the cat's relationship to everything else in the frame — any humans, other animals, objects, and the camera itself. I need to know: is this cat an active, willing participant in the moment being captured, or is the moment being imposed on the cat by external forces?"
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "I'll examine the cat's apparent agency in this image — specifically whether the cat appears to be choosing to be part of what's happening, or whether the moment is being done to the cat rather than with it. Let me look closely at how the cat relates to the humans, objects, and camera present in the frame."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Yes, exactly. What is your assessment? Focus on whether the cat appears to have a genuine choice in the matter and whether any interactions look mutual and voluntary rather than forced."
+            }
+          ]
+        }
+      ],
+      "responses": [
+        [
+          {
+            "type": "text",
+            "text": "This cat is clearly a willing participant with full agency in this moment. Any interactions visible in the frame — with people, objects, or the surrounding environment — feel mutual and voluntary. The cat appears to be choosing this: leaning into contact, directing an interaction with the tilt of its head or the pressure of its body, or simply existing in a self-determined state of rest, play, or exploration. The cat seems either unaware of or entirely indifferent to the camera, giving the image the quality of a stolen moment — something real that the photographer happened to witness and capture."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "The cat's agency in this moment is mixed. There are some signs that the cat is participating voluntarily — certain aspects of its body language suggest willingness — but there are also indications that the interaction or moment may not be entirely on the cat's terms. The cat's attention may have been deliberately directed toward something, or its position relative to other subjects in the frame suggests partial cooperation rather than fully self-directed choice. The relationship between the cat and the camera or other elements feels somewhat managed."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "This moment is being imposed on the cat rather than chosen by it. The cat appears to be a passive subject with little meaningful agency — being held in position, physically directed, dressed up, or otherwise manipulated into the scene by external forces. The cat's relationship with the humans, objects, or camera in the frame feels forced and manufactured rather than mutual and genuine. This is not a cat that chose to be here doing this — this is a cat that is having something done to it for the purpose of creating an image."
+          }
+        ]
+      ],
+      "output": {
+        "$starlark": "output['scores'][0] * 1.0 + output['scores'][1] * 0.5 + output['scores'][2] * 0.0"
+      }
+    }
+  ],
+  "description": "Scores how genuine a cat's behavior appears in an image. Evaluates bodily naturalism (is the posture voluntary?), environmental integrity (is the scene staged?), and relational genuineness (does the cat have agency in any interactions?) to produce a 0-to-1 measure of authentic, unperformed feline behavior."
+}
